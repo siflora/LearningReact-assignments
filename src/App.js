@@ -1,4 +1,5 @@
-import './App.css';
+import styles from './App.module.css';
+
 import React, { Component } from 'react';
 import Person from './Person/Person';
 
@@ -48,36 +49,42 @@ togglePersonsHandler = () => {
 
 render() {
 
-  const style = {
-      backgroundColor: 'white',
-      font: 'inherit',
-      border: '1px, solid, grey',
-      padding: '8px',
-      cursor: 'pointer'
-  };
-
   let persons = null;
+  let btnClass = '';
 
   if(this.state.showPersons) {
       persons = (
         <div>
-					{this.state.persons.map((person, index)=> {
-						return <Person
-						name={person.name}
-						age={person.age}
-						click={() => this.deletePersonHandler(index)}
-						key={person.id}
-                        changed={(event)=>this.nameChangedHandler(event, person.id)}/>
-					})
-					};
+		    {this.state.persons.map((person, index)=> {
+		    	return <Person
+		    	name={person.name}
+		    	age={person.age}
+		    	click={() => this.deletePersonHandler(index)}
+		    	key={person.id}
+                changed={(event)=>this.nameChangedHandler(event, person.id)}/>
+		    })
+		    };
         </div>
       )
+    btnClass = styles.Red;
+  }
+
+  const classes = [];
+  if(this.state.persons.length <= 2) {
+      classes.push(styles.red)
+  };
+  if(this.state.persons.length <= 1) {
+      classes.push(styles.bold)
   }
 
   return (
-    <div className="App">
+    <div className={styles.App}>
       <h1>Hello World!</h1>
-      <button style={style} onClick={this.togglePersonsHandler}>Toggle Persons</button>
+      <p className={classes.join(' ')}>Show me how it works!</p>
+      <button
+      className={btnClass}
+      onClick={this.togglePersonsHandler}>
+      Toggle Persons</button>
       {persons}
     </div>
   );
