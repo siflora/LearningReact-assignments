@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+//import { Route } from 'react-router-dom';
 import axios from '../../axios-orders';
 
 
@@ -93,29 +93,23 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        // alert('You continue!');
-        this.setState( { loading: true } );
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Max Schwarzmüller',
-                address: {
-                    street: 'Teststreet 1',
-                    zipCode: '41351',
-                    country: 'Germany'
-                },
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'fastest'
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i)+ '=' 
+            + encodeURIComponent(this.state.ingredients[i]));
         }
-        axios.post( '/orders.json', order )
-            .then( response => {
-                this.setState( { loading: false, purchasing: false } );
-            } )
-            .catch( error => {
-                this.setState( { loading: false, purchasing: false } );
-            } );
+
+        queryParams.push('price=' + this.state.totalPrice);
+
+        const queryString = queryParams.join('&');
+
+        this.props.history.push({
+            pathname: '/checkout/',
+            search: '?' + queryString
+        });
+
+        this.setState({ purchasing: false});
+        // alert('You continue!');
     }
 
     render () {
@@ -130,8 +124,7 @@ class BurgerBuilder extends Component {
 
         if ( this.state.ingredients ) {
             burger = (
-                
-                <Route path='/burger-builder/'>
+                <Aux>
                     <Burger ingredients={this.state.ingredients} />
                     <BuildControls
                         ingredientAdded={this.addIngredientHandler}
@@ -140,7 +133,7 @@ class BurgerBuilder extends Component {
                         purchasable={this.state.purchasable}
                         ordered={this.purchaseHandler}
                         price={this.state.totalPrice} />
-                </Route>
+                </Aux>
             );
             orderSummary = <OrderSummary
                 ingredients={this.state.ingredients}

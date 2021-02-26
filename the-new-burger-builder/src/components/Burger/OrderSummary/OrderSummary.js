@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+//import {Link} from 'react-router-dom';
 
 import Aux from '../../../hoc/Aux/Aux';
 import Button from '../../UI/Button/Button';
@@ -29,10 +29,10 @@ class OrderSummary extends Component {
                 <p><strong>Total Price: {this.props.price.toFixed( 2 )}</strong></p>
                 <p>Continue to Checkout?</p>
                 <Button btnType="Danger" clicked={this.props.purchaseCancelled}>
-                    <Link to='/burger-builder/'>CANCEL</Link>
+                    CANCEL
                 </Button>
                 <Button btnType="Success" clicked={this.props.purchaseContinued}>
-                    <Link to='/checkout/'>CONTINUE</Link>
+                    CONTINUE
                 </Button>
             </Aux>
         );
